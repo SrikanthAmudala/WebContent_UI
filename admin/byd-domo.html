@@ -1,0 +1,970 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manzeera | DOMO</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+<!-- Data Tables -->
+<link href="css/plugins/dataTables/dataTables.bootstrap.css"
+	rel="stylesheet">
+<link href="css/plugins/dataTables/dataTables.responsive.css"
+	rel="stylesheet">
+<link href="css/plugins/dataTables/dataTables.tableTools.min.css"
+	rel="stylesheet">
+<link href="css/animate.css" rel="stylesheet">
+<link href="style2.css" rel="stylesheet">
+<link href="css/forms/kforms.css" rel="stylesheet">
+<link href="css/bootstrap-toggle.min.css" rel="stylesheet">
+
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- <script src="js/bootstrap-toggle.min.js"></script> -->
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="js/main.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+<script src="js/plugins/jeditable/jquery.jeditable.js"></script>
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<!--<script src="js/plugins/dataTables/dataTables.responsive.js"></script> -->
+<script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+
+<!-- Page-Level Scripts -->
+<script type="text/javascript">
+	$(document).ready(function() {
+		"use strict";
+
+		$('.dataTables-example').dataTable({
+			responsive : true,
+			"dom" : 'T<"clear">lfrtip',
+			"tableTools" : {
+				"sSwfPath" : "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+			}
+		});
+
+		/* Init DataTables */
+		var oTable = $('#editable').dataTable();
+
+		/* Apply the jEditable handlers to the table */
+		oTable.$('td').editable('example_ajax.html', {
+			"callback" : function(sValue, y) {
+				var aPos = oTable.fnGetPosition(this);
+				oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+			},
+			"submitdata" : function(value, settings) {
+				return {
+					"row_id" : this.parentNode.getAttribute('id'),
+					"column" : oTable.fnGetPosition(this)[2]
+				};
+			},
+			"width" : "90%",
+			"height" : "100%"
+		});
+
+	});
+
+	function fnClickAddRow() {
+		$('#editable').dataTable().fnAddData(
+				[ "Custom row", "New row", "New row", "New row", "New row" ]);
+
+	}
+</script>
+
+<!-- Required js files for angularjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
+<!--<script type="lib/angular.min.js"></script>-->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
+<script src="lib/angular-ui-router.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.6.1/angular-messages.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.6.4/angular-messages.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular-cookies.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script> -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/ng-idle/1.3.2/angular-idle.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
+<script src="js/script.js"></script>
+
+<!-- Custom controller files -->
+<script src="controller/configurationController.js"></script>
+<script src="controller/dashboardController.js"></script>
+<script src="controller/loginController.js"></script>
+<script src="controller/userController.js"></script>
+<script src="controller/securityQuestionController.js"></script>
+
+<!-- Custom factory files -->
+<script src="factory/configurationFactory.js"></script>
+<script src="factory/dashboardFactory.js"></script>
+<script src="factory/loginFactory.js"></script>
+<script src="factory/userFactory.js"></script>
+<style>
+.asterik {
+	color: red;
+}
+
+body.DTTT_Print {
+	background: #fff;
+}
+
+.DTTT_Print #page-wrapper {
+	margin: 0;
+	background: #fff;
+}
+
+button.DTTT_button, div.DTTT_button, a.DTTT_button {
+	border: 1px solid #e7eaec;
+	background: #fff;
+	color: #676a6c;
+	box-shadow: none;
+	padding: 6px 8px;
+}
+
+button.DTTT_button:hover, div.DTTT_button:hover, a.DTTT_button:hover {
+	border: 1px solid #d2d2d2;
+	background: #fff;
+	color: #676a6c;
+	box-shadow: none;
+	padding: 6px 8px;
+}
+
+.dataTables_filter label {
+	margin-right: 5px;
+}
+
+/* The switch - the box around the slider */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+	display: none;
+}
+
+/* The slider */
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.slider {
+	background-color: #2196F3;
+}
+
+input:focus+.slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+</style>
+</head>
+<body ng-app="app" ng-controller="configurationCtrl"
+	ng-init="readSchedule()">
+	<!-- <toaster-container toaster-options="{'close-button': true}"></toaster-container> -->
+	<div id="wrapper">
+		<nav class="navbar-default navbar-static-side fixed-menu"
+			role="navigation">
+			<div class="sidebar-collapse">
+				<div id="hover-menu"></div>
+				<ul class="nav metismenu" id="side-menu">
+					<li>
+						<div class="logopanel" style="margin-left: 0px; z-index: 99999">
+							<div class="profile-element">
+								<h2>
+									<a href="index.html"><img src="images/logo.png"
+										alt="Manzeera Domo Logo"></a>
+								</h2>
+							</div>
+							<div class="logo-element">
+								<a href="index.html"><img src="images/logo-mobile.png"
+									alt="Manzeera Domo Logo"></a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="leftpanel-profile">
+							<!-- <div class="media-left">
+								<a href="#"> <img
+									src="https://placeholdit.imgix.net/~text?txtsize=22&txt=100x100&w=100&h=100"
+									alt="" class="media-object img-circle">
+								</a>
+							</div> -->
+							<!-- <div class="media-body profile-name" style="white-space: nowrap;">
+								<h4 class="media-heading">
+									{{currentLoggedUser}} <a data-toggle="collapse"
+										data-target="#loguserinfo" class="pull-right"><i
+										class="fa fa-angle-down"></i></a>
+								</h4>
+								<span>Software Engineer</span>
+							</div> -->
+						</div>
+						<!-- <div class="leftpanel-userinfo collapse" id="loguserinfo"
+							style="position: absolute; background: #3b4354 !important">
+							<h5 class="sidebar-title">Address</h5>
+							<address>Dumaguete Negros Is. Philippines 6200</address>
+							<h5 class="sidebar-title">Contact</h5>
+							<ul class="list-group">
+								<li class="list-group-item"><label class="pull-left">Email</label>
+									<span class="pull-right">demo@softreliance.com</span></li>
+								<li class="list-group-item"><label class="pull-left">Home</label>
+									<span class="pull-right">(032) 1234 567</span></li>
+								<li class="list-group-item"><label class="pull-left">Mobile</label>
+									<span class="pull-right">+63012 3456 789</span></li>
+								<li class="list-group-item"><label class="pull-left">Social</label>
+									<div class="social-icons pull-right">
+										<a href="#"><i class="fa fa-facebook-official"></i></a> <a
+											href="#"><i class="fa fa-twitter"></i></a> <a href="#"><i
+											class="fa fa-pinterest"></i></a>
+									</div></li>
+							</ul>
+						</div> -->
+					</li>
+					<li>
+						<!-- START : Left sidebar -->
+						<div class="nano left-sidebar">
+							<div class="nano-content">
+								<ul class="nav nav-pills nav-stacked nav-inq">
+									<li><a href="index.html"><i class="fa fa-home"></i> <span
+											class="nav-label">Dashboards</span></a></li>
+									<li>
+										<!-- <a href="#" data-toggle="modal"
+											data-target="#aboutModal"> --> <a href="about-us.html"><i
+											class="fa fa-edit"></i> <span class="nav-label">About
+												Us</span></a>
+									</li>
+									<li class="active">
+										<!-- <a href="#" data-toggle="modal"
+											data-target="#servicesModal"> --> <a href="services.html"><i
+											class="fa fa-table"></i> <span class="nav-label">Services</span></a>
+									</li>
+									<li>
+										<!-- <a href="" data-toggle="modal"
+											data-target="#benefitModal"> --> <a href="benefits.html"><i
+											class="fa fa-bar-chart-o"></i> <span class="nav-label">Benefits</span></a>
+									</li>
+									<!-- <li><a href="#" data-toggle="modal"
+											data-target="#editModal"><i class="fa fa-envelope"></i> <span
+												class="nav-label">Edit Profile</span></a></li> -->
+									<li>
+										<!-- <a href="#" data-toggle="modal"
+											data-target="#contactModal"> --> <a href="contact-us.html"><i
+											class="fa fa-magic"></i> <span class="nav-label">Contact
+												Us</span></a>
+									</li>
+								</ul>
+							</div>
+						</div> <!-- END : Left sidebar -->
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<div id="page-wrapper" class="gray-bg">
+		<!-- BEGIN HEADER -->
+		<div id="header">
+			<nav class="navbar navbar-fixed-top white-bg show-menu-full" id="nav"
+				role="navigation" style="margin-bottom: 0">
+				<div class="navbar-header">
+					<a class="navbar-minimalize minimalize-styl-2 btn"
+						href="javascript:void(0)"><i class="fa fa-bars"
+						style="font-size: 27px;"></i> </a>
+				</div>
+				<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown pull-right"><a href="#"
+						class="dropdown-toggle" data-toggle="dropdown"
+						aria-expanded="true"> <span class="pl15">{{currentLoggedUser}}
+						</span> <span class="caret caret-tp"></span>
+					</a>
+						<ul class="dropdown-menu animated m-t-xs">
+							<!-- <li><a href="" data-toggle="modal" data-target="#editModal"
+									class="animated animated-short fadeInUp"><i
+										class="fa fa-user"></i> Profile</a></li> -->
+							<!-- <li><a href="contact-us.html"
+									class="animated animated-short fadeInUp"><i
+										class="fa fa-group"></i> Contacts</a></li>
+								<li><a href="services.html"
+									class="animated animated-short fadeInUp"><i
+										class="fa fa-inbox"></i> Services</a></li> -->
+							<!-- <li class="divider"></li> -->
+							<li><a ng-click="clearCookies()"
+								class="animated animated-short fadeInUp"><i
+									class="fa fa-sign-out"></i> Logout</a></li>
+						</ul></li>
+				</ul>
+			</nav>
+		</div>
+		<!-- END HEADER -->
+
+		<div style="clear: both; height: 61px;"></div>
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-lg-12">
+					<div
+						style="width: 100%; background-color: #fff; border: 1px solid #ccc; padding: 10px;">
+						<a ng-href="ERP_EXTRACTION_SOLUTION_BYD.pdf"
+							download="ERP_EXTRACTION_SOLUTION_BYD MANUAL.pdf"
+							data-toggle="tooltip" title="Click to download guide !"
+							style="font-size: 16px;">Best Practice Guide for SAP ByD
+							integration to DOMO</a>
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="inqbox float-e-margins">
+						<div class="inqbox-content">
+							<h2>SAP ByD to DOMO</h2>
+							<ol class="breadcrumb">
+								<li><a href="index.html">Home</a></li>
+								<li><a href="index.html">Categories</a></li>
+								<li class="active"><strong>SAP ByD to DOMO</strong></li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12 marno">
+					<div class="inqbox float-e-margins">
+						<div class="inqbox-title">
+							<h5>
+								Create New Configuration <span style="color: green;"
+									ng-repeat="createmsg in insertConfig">{{createmsg.result}}</span>
+							</h5>
+							<div class="inqbox-tools">
+								<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+								</a>
+							</div>
+						</div>
+						<div class="inqbox-content">
+							<form method="post" class="form-horizontal" name="createform"
+								onsubmit="return false;" id="createform" novalidate>
+
+								<div class="form-group">
+									<div class="col-sm-12" ng-messages="createform.url.$error"
+										ng-class="{'has-error': createform.url.$invalid && !createform.url.$pristine }">
+										<input type="text" name="url"
+											ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/"
+											class="form-control" ng-model="configuration.url"
+											ng-maxlength="5000"
+											placeholder="API Url* (Example : http://www.example.com) "
+											required> <span style="color: red;"> <span
+											ng-message="required" ng-if="!createform.url.$pristine">API
+												Url is required</span> <span ng-message="pattern"
+											ng-if="!createform.url.$pristine">Enter a valid API
+												Url</span> <span ng-message="maxlength"
+											ng-if="!createform.url.$pristine">API Url is too long</span>
+										</span>
+									</div>
+								</div>
+
+								<div class="hr-line-dashed"></div>
+
+								<div class="form-group">
+									<div class="col-sm-6" ng-messages="createform.url_id.$error"
+										ng-class="{'has-error': !createform.url_id.$pristine && createform.url_id.$invalid }">
+										<input type="text" name="url_id" class="form-control"
+											ng-maxlength="100" ng-model="configuration.url_id"
+											placeholder="API ID*" required=""> <span
+											style="color: red;"> <span ng-message="required"
+											ng-if="!createform.url_id.$pristine">API Id is
+												required</span> <span ng-message="maxlength"
+											ng-if="!createform.url_id.$pristine">API ID is too
+												long</span>
+										</span>
+									</div>
+
+									<div class="col-sm-6" ng-messages="createform.password.$error"
+										ng-class="{'has-error': !createform.password.$pristine && createform.password.$invalid }">
+										<input type="password" class="form-control" name="password"
+											ng-model="configuration.url_password" id="password"
+											ng-maxlength="100" value={{configuration.url_password}}
+											placeholder=" API Password*" required=""> <span
+											toggle="#password" data-toggle="tooltip" title="show/hide"
+											class="fa fa-fw fa-eye field-icon toggle-password"></span>
+										<!--  <input
+											type="checkbox" ng-click="togglePasswordCreate()">Show
+										Password -->
+										<span style="color: red;"> <span ng-message="required"
+											ng-if="!createform.password.$pristine">API Password is
+												required</span> <span ng-message="maxlength"
+											ng-if="!createform.password.$pristine">API Password is
+												too long</span>
+										</span>
+									</div>
+
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group">
+									<!-- <label class="col-lg-2 control-label">Client Id</label> -->
+									<div class="col-lg-6" ng-messages="createform.client_id.$error"
+										ng-class="{'has-error':!createform.client_id.$pristine && createform.client_id.$invalid }">
+										<input type="text" name="client_id" class="form-control"
+											ng-model="configuration.client_id" ng-maxlength="1000"
+											placeholder="Target DOMO System client ID*" required="">
+										<span style="color: red;"> <span ng-message="required"
+											ng-if="!createform.client_id.$pristine">Target DOMO
+												System client ID is required</span> <span ng-message="maxlength"
+											ng-if="!createform.client_id.$pristine">Target DOMO
+												System client ID is too long</span>
+										</span>
+									</div>
+									<div class="col-sm-6"
+										ng-messages="createform.client_secret.$error"
+										ng-class="{'has-error': !createform.client_secret.$pristine && createform.client_secret.$invalid }">
+										<input type="text" class="form-control" name="client_secret"
+											ng-model="configuration.client_secret" ng-maxlength="1000"
+											placeholder="Target DOMO System Secret Key*" required="">
+										<span style="color: red;"> <span ng-message="required"
+											ng-if="!createform.client_secret.$pristine">Target
+												DOMO System Secret Key is required</span> <span
+											ng-message="maxlength"
+											ng-if="!createform.client_secret.$pristine">Target
+												DOMO System Secret Key is too long</span>
+										</span>
+									</div>
+								</div>
+								<div class="hr-line-dashed"></div>
+								<div class="form-group">
+									<!-- <label class="col-sm-2 control-label">Dataset_name</label> -->
+									<div class="col-sm-6"
+										ng-messages="createform.dataset_name.$error"
+										ng-class="{'has-error': !createform.dataset_name.$pristine && createform.dataset_name.$invalid }">
+										<input type="text" name="dataset_name" class="form-control"
+											ng-model="configuration.dataset_name" ng-maxlength="30"
+											placeholder="Data Set Name*" required=""> <span
+											style="color: red;"> <span ng-message="required"
+											ng-if="!createform.dataset_name.$pristine">Data Set
+												Name is required</span> <span ng-message="maxlength"
+											ng-if="!createform.dataset_name.$pristine">Data Set
+												Name is too long</span>
+										</span>
+
+									</div>
+									<div class="col-sm-6"
+										ng-messages="createform.data_description.$error"
+										ng-class="{'has-error': !createform.data_description.$pristine && createform.data_description.$invalid}">
+										<input type="text" name="data_description"
+											class="form-control"
+											ng-model="configuration.data_description" ng-maxlength="200"
+											placeholder="Data Set Description*" required=""> <span
+											style="color: red;"> <span ng-message="required"
+											ng-if="!createform.data_description.$pristine">Data
+												Set Description is required</span> <span ng-message="maxlength"
+											ng-if="!createform.data_description.$pristine">Data
+												Set Description is too long</span>
+										</span>
+									</div>
+									<!-- <label class="col-sm-2 control-label">Url</label> -->
+
+								</div>
+
+								<div class="hr-line-dashed"></div>
+								<div class="form-group">
+									<div class="col-sm-6" ng-messages="createform.userID.$error"
+										ng-class="{'has-error': !createform.userID.$pristine && createform.userID.$invalid }">
+										<input type="text" name="userID" class="form-control"
+											ng-model="configuration.userID" placeholder="User ID*"
+											ng-maxlength="30" required=""> <span
+											style="color: red;"> <span ng-message="required"
+											ng-if="!createform.userID.$pristine">User Id is
+												required</span> <span ng-message="maxlength"
+											ng-if="!createform.userID.$pristine">User Id is too
+												long</span>
+										</span>
+									</div>
+									<div class="col-sm-6"
+										ng-messages="createform.email_update.$error"
+										ng-class="{'has-error': !createform.email_update.$pristine && createform.email_update.$invalid }">
+										<span class="asterik"></span><input type="text" validate-email
+											name="email_update" class="form-control" ng-maxlength="5000"
+											ng-model="configuration.email_update"
+											pattern="(([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)(\s*(;|,)\s*|\s*$))*"
+											placeholder="Email Update*  Example ({{text}})" required>
+										<span style="color: red;"> <span ng-message="required"
+											ng-if="!createform.email_update.$pristine">Email
+												Address is required</span> <span ng-message="pattern"
+											ng-if="!createform.email_update.$pristine">Email
+												Address is Invalid</span> <span ng-message="maxlength"
+											ng-if="!createform.email_update.$pristine">Email
+												Address is too long</span>
+										</span>
+									</div>
+								</div>
+
+								<div class="hr-line-dashed"></div>
+								<div class="form-group">
+									<div class="col-sm-4">
+										<button class="btn btn-primary" type="submit"
+											ng-click="createConfig(configuration,'SAPBYD')" ng-disabled="createform.$invalid">Save</button>
+										<button class="btn btn-white" type="submit">Cancel</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12 marno">
+					<div class="inqbox float-e-margins">
+						<div class="inqbox-title">
+							<h5>
+								Batch Schedule <span ng-repeat="response in runResponse"
+									style="color: green">{{response.result}}</span>
+							</h5>
+							<div class="inqbox-tools">
+								<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+								</a>
+							</div>
+						</div>
+
+						<div class="inqbox-content inqbox-content2">
+							<div class="row">
+								<div class="form-group maryes">
+									<form method="post" class="form-horizontal" id="runForm"
+										name="runForm">
+										<div>
+											<div class="col-sm-3">
+												<label>Frequency in hours</label><input type="number"
+													name="frequency" class="form-control"
+													ng-model="runConfigInfinte.frequency" value={{frequency}}>
+											</div>
+											<!-- label class="col-sm-2 control-label">Url Id</label> -->
+											<div class="col-sm-3">
+												<label>From Date : {{dateform}}</label> <input
+													placeholder="From Date" name="setTodaysFromDate"
+													class="form-control input-min-width-95p" type="date"
+													id="fromdate" value={{dateform}}
+													ng-model="runConfigInfinte.from_date">
+												<!-- <input
+												type="date" name="to_date" class="form-control"
+												ng-model="runConfigInfinte.to_date" placeholder="To Date*"
+												required> -->
+											</div>
+											<div class="col-sm-3">
+												<!-- <input type="text" name="to_date" class="form-control"
+													ng-model="runConfigInfinte.to_date" value={{toDate}}
+													onfocus="(this.type='date')" placeholder="To Date" required> -->
+												<label>To Date : {{dateto}}</label><input type="date"
+													name="setTodaysToDate"
+													class="form-control input-min-width-95p"
+													ng-model="runConfigInfinte.to_date" placeholder="To Date">
+											</div>
+										</div>
+									</form>
+									<div class="col-sm-3">
+										<button type="button" class="btn btn-primary btn-sm"
+											ng-init="btn ='Schedule Config'"
+											ng-click="runConfigInfinteLoop(runConfigInfinte)">{{btn}}</button>
+										<!-- 	<button type="button" class="btn btn-info btn-sm"
+											ng-show="startText  === 'In Progress'">In Progress..</button> -->
+									</div>
+								</div>
+							</div>
+							<div class="hr-line-dashed"></div>
+							<!-- <div class="navbar-search pull-right">
+								<input type="text" class="span2 search-query"
+									ng-model="searchText" placeholder="Search">
+							</div> -->
+
+							<div>
+								<span style="color: red;"
+									ng-show="errorConfiguration == 'No Configuration exists for user'">{{errorConfiguration}}</span>
+								<span class="success-msg" ng-repeat="runmsg in run">{{runmsg.result}}</span>
+								<span class="success-msg" ng-repeat="disable in disable">{{disable.result}}</span>
+								<span ng-repeat="msg in updateConfigResponse"
+									class="success-msg">{{msg.result}}</span>
+								<table class="table table-striped table-bordered table-hover">
+
+									<thead>
+										<tr>
+											<!-- <th>Index</th> -->
+											<th class="tab_res">Name of Configuration</th>
+											<th>Status</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+
+									<tbody ng-repeat="item in displayConfig">
+										<tr class="gradeX" ng-repeat="config in item.result">
+											<!-- <td>{{$index}}</td> -->
+											<td class="tab_res">{{config.dataset_name}}</td>
+											<td>{{config.active}}</td>
+											<td>
+												<button type="button" class="btn btn-primary btn-sm"
+													ng-click="selectedConfiguraion(config)" data-toggle="modal"
+													data-target="#updateModal">Update</button>
+												<button type="button" class="btn btn-success btn-sm"
+													ng-click="viewConfigLogs(config)" data-toggle="modal"
+													data-target="#viewLogsModal">View Logs</button>
+												<button type="button" class="btn btn-info btn-sm"
+													ng-init="btnLabel[$index]='Run Now'"
+													ng-click="runConfig(config,$index)">{{btnLabel[$index]}}</button>
+												<button type="button" class="btn btn-info btn-sm"
+													ng-show="startText  === 'In Progress'">In
+													Progress..</button>
+												<button type="button" class="btn btn-danger btn-sm"
+													ng-click="disableConfiguration(config)"
+													value={{config.active}}
+													ng-show="config.active === 'Activated'">Deactivate</button>
+												<button type="button" class="btn btn-success btn-sm"
+													ng-click="disableConfiguration(config)"
+													value={{config.active}}
+													ng-show="config.active === 'Deactivated'">Activate</button>
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<th>Name of Configuration</th>
+											<th>Status</th>
+											<th>Action</th>
+										</tr>
+									</tfoot>
+								</table>
+
+								<!--Update configuration Modal -->
+								<div id="updateModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white;">Update
+													Configuration</h4>
+											</div>
+											<div class="modal-body">
+												<form method="post" class="form-horizontal" id="updateForm"
+													name="updateConfigForm">
+													<div class="form-group">
+														<label class="col-sm-2 control-label">API Url</label>
+														<div class="col-sm-10">
+															<input type="url" name="url" class="form-control"
+																ng-model="selectedConfiguration.url">
+														</div>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">API ID</label>
+														<div class="col-sm-10">
+															<input type="url_id" name="url_id" class="form-control"
+																ng-model="selectedConfiguration.url_id">
+														</div>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">User ID</label>
+														<div class="col-sm-10">
+															<input type="userID" name="userID" class="form-control"
+																ng-model="selectedConfiguration.userID" disabled>
+														</div>
+													</div>
+
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">API Password</label>
+														<div class="col-sm-10">
+															<input type="password" class="form-control"
+																id="passwordInput" name=" API password"
+																value="{{selectedConfiguration.url_password}}"
+																ng-model="selectedConfiguration.url_password"><span
+																toggle="#passwordInput" data-toggle="tooltip"
+																title="show/hide"
+																class="fa fa-fw fa-eye field-icon toggle-password"></span>
+															<!-- <input
+																type="checkbox" ng-click="togglePassword()">Show
+															Password -->
+														</div>
+													</div>
+
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-lg-2 control-label">Target DOMO
+															System client ID</label>
+														<div class="col-lg-10">
+															<input type="client_id" name="client_id"
+																class="form-control"
+																ng-model="selectedConfiguration.client_id">
+														</div>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Target DOMO
+															System Secret Key</label>
+														<div class="col-sm-10">
+															<input type="client_secret" class="form-control"
+																name="client_secret"
+																ng-model="selectedConfiguration.client_secret">
+														</div>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Data Set
+															Name</label>
+														<div class="col-sm-10">
+															<input type="dataset_name" name="dataset_name"
+																class="form-control"
+																ng-model="selectedConfiguration.dataset_name" disabled>
+														</div>
+													</div>
+
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Data Set
+															Description</label>
+														<div class="col-sm-10">
+															<input type="data_description" name="data_description"
+																class="form-control"
+																ng-model="selectedConfiguration.data_description">
+														</div>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Email Update</label>
+														<div class="col-sm-10">
+															<input type="text" name="email_update"
+																class="form-control"
+																ng-model="selectedConfiguration.email_update">
+														</div>
+													</div>
+												</form>
+											</div>
+											<div class="modal-footer">
+												<button class="btn btn-primary" type="submit"
+													ng-click="updateConfig()">Update changes</button>
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- View Logs Modal -->
+								<div id="viewLogsModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white">View Logs
+
+												</h4>
+											</div>
+											<div class="modal-body">
+												<table style="overflow: auto"
+													class="table table-striped table-bordered table-hover">
+													<thead style="background-color: #ccccff">
+														<tr>
+															<th>Dataset Name</th>
+															<th>Message</th>
+															<th>Timestamp</th>
+														</tr>
+													</thead>
+													<tbody ng-repeat="item in viewLogs ">
+														<tr class="gradeX"
+															ng-repeat="logs in item.result | orderBy : '-time_stamp'">
+															<td>{{logs.dataset_name}}</td>
+															<td>{{logs.message}}</td>
+															<td>{{logs.time_stamp |date:'medium'}}</td>
+														</tr>
+													</tbody>
+												</table>
+												<span style="color: red"
+													ng-show="errorViewLogs == 'No logs for UserID'">{{errorViewLogs}}</span>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Services Modal -->
+								<div id="servicesModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white">Services</h4>
+											</div>
+											<div class="modal-body">
+												<strong>Content to be placed here</strong>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- About us  Modal -->
+								<div id="aboutModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white">About Us</h4>
+											</div>
+											<div class="modal-body">
+												<strong>Content to be placed here</strong>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Contact us  Modal -->
+								<div id="contactModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white">Contact Us</h4>
+											</div>
+											<div class="modal-body">
+												<strong>Content to be placed here</strong>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Edit Profile Modal -->
+								<div id="editModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white">Profile</h4>
+											</div>
+											<div class="modal-body">
+												<strong>Content to be placed here</strong>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Benefit Modal -->
+								<div id="benefitModal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header" style="background-color: #646D7E">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title" style="color: white">Benefits</h4>
+											</div>
+											<div class="modal-body">
+												<strong> <i class="fa fa-users"
+													style="color: #008080"></i><br> <span
+													class="nav-label">Extensive Knowledge across a range
+														of BI platforms and implementation of strategies </span><br>
+													<br> <i class="fa fa-money" style="color: #008080"></i><br>
+													<span class="nav-label">Optimum value through the
+														best Practice Models and utilisation of global delivery
+														model </span><br> <br> <i class="fa fa-puzzle-piece"
+													style="color: #008080"></i><br> <span
+													class="nav-label">Expert Knowledge and experience
+														leads to higher quality and more effective BI </span> <br> <br>
+													<i class="fa fa-cogs" style="color: #008080"></i><br>
+													<span class="nav-label">Best Practice Models and
+														extensive experience leads to minimal risk </span> <br> <br>
+													<i class="fa fa-area-chart" style="color: #008080"></i><br>
+													<span class="nav-label">Rapid implementation
+														enabling minimal impact and maximum results </span> <br> <br>
+													<i class="fa fa-handshake" style="color: #008080"></i><br>
+													<span class="nav-label">Maximising BI
+														business,increasing ROI and full metting business
+														requirements </span>
+												</strong>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div>All product and company names are trademarks&#8482; or
+				registered&reg; trademarks of their respective holders.</div>
+		</div>
+	</div>
+	<div ui-view></div>
+</body>
+</html>
