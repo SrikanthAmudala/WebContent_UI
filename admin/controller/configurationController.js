@@ -75,6 +75,9 @@ app
 								else if ($window.location.pathname == '/admin/success-factors-domo.html'){
 									userObj["service_type"] = 'SAPSFD';
 								}
+								else if ($window.location.pathname == '/admin/mimecast-domo.html'){
+									userObj["service_type"] = 'SAPMMC';
+								}
 
 								configurationFactory
 										.readConfiguration(userObj)
